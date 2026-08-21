@@ -8,4 +8,5 @@ NB!!! 1. Before using that app "ICAI, let's thank to Jalecom for providing the t
 
 5. "recording_module.py" and "tracking_module.py" are not usable for now!
 
-I hope the application is useful for someone. I'm not a programmer, I relied on the help of the AI ​​model, and therefore gross errors are possible.
+I hope, that app, to be useful for someone. I'm not a programmer, I relied on the help of AI ​​models, and therefore gross errors are possible, so I apologize in advance!
+NJOY!!!
