@@ -1,4 +1,4 @@
-![alt text](https://github.com/](https://github.com/TwoTeeToRoomTwo/-ICAI---IP-Camera-Alternative-Interface.-Alternative-to-ICam365-YCC365/blob/main/ICAI.png)
+![alt text]([https://github.com/](https://github.com/TwoTeeToRoomTwo/-ICAI---IP-Camera-Alternative-Interface.-Alternative-to-ICam365-YCC365/blob/main/ICAI.png](https://raw.githubusercontent.com/TwoTeeToRoomTwo/-ICAI---IP-Camera-Alternative-Interface.-Alternative-to-ICam365-YCC365/refs/heads/main/ICAI.png))
 
 NB!!! 1. Before using that app "ICAI, let's thank to Jalecom for providing the tools to "bypass" the imposed restrictions. Go to this link: https://github.com/Jalecom/AJ_HC1703L_Teardown and follow the instructions!!!
 
