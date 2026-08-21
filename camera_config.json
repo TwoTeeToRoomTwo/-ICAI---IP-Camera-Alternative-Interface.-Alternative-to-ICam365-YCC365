@@ -1,0 +1,189 @@
+// Change the IP addresses with yours!!!!!
+
+{
+    "movement_blocking_enabled": true,
+    "audio_volume": 100,
+    "cameras": [
+        {
+            "ip": "192.168.0.101",
+            "name": "1",
+            "rtsp_url": "rtsp://192.168.0.101:554/0/av0",
+            "audio_url": "rtsp://192.168.0.101:8001/0/audio",
+            "white_light_status": false,
+            "ir_light_status": false,
+            "day_night_status": true,
+            "last_connection_attempt": 0,
+            "connection_attempts": 0,
+            "initial_connection_done": false,
+            "tracking_enabled": false,
+            "recording_config": {
+                "enable_recording": false,
+                "enable_images": true,
+                "record_mode": "continuous",
+                "start_time": "00:00",
+                "end_time": "23:59",
+                "days": {
+                    "mon": true,
+                    "tue": true,
+                    "wed": true,
+                    "thu": true,
+                    "fri": true,
+                    "sat": true,
+                    "sun": true
+                },
+                "pre_record_delay": 60,
+                "stop_delay": 20,
+                "min_photo_time": 60,
+                "photo_count": 1,
+                "photo_interval": 10,
+                "video_retention": "1h",
+                "image_retention": "1h",
+                "max_space_gb": 1
+            },
+            "audio_volume": 90,
+            "image_capture_settings": {
+                "min_confidence": 0.87,
+                "wait_time": 16,
+                "last_capture_time": 1768936021.823309,
+                "person_detected": true,
+                "detection_start_time": 1769711351.7634232
+            }
+        },
+        {
+            "ip": "192.168.0.102",
+            "name": "2",
+            "rtsp_url": "rtsp://192.168.0.102:554/0/av0",
+            "audio_url": "rtsp://192.168.0.102:8001/0/audio",
+            "white_light_status": false,
+            "ir_light_status": false,
+            "day_night_status": true,
+            "last_connection_attempt": 0,
+            "connection_attempts": 0,
+            "initial_connection_done": false,
+            "tracking_enabled": false,
+            "recording_config": {
+                "enable_recording": false,
+                "enable_images": true,
+                "record_mode": "continuous",
+                "start_time": "00:00",
+                "end_time": "24:00",
+                "days": {
+                    "mon": true,
+                    "tue": true,
+                    "wed": true,
+                    "thu": true,
+                    "fri": true,
+                    "sat": true,
+                    "sun": true
+                },
+                "pre_record_delay": 60,
+                "stop_delay": 20,
+                "min_photo_time": 60,
+                "photo_count": 1,
+                "photo_interval": 10,
+                "video_retention": "1h",
+                "image_retention": "1h",
+                "max_space_gb": 1
+            },
+            "audio_volume": 8,
+            "image_capture_settings": {
+                "min_confidence": 0.88,
+                "wait_time": 10,
+                "last_capture_time": 1768936012.540092,
+                "person_detected": true,
+                "detection_start_time": 1768936557.4588537
+            }
+        },
+        {
+            "ip": "192.168.0.103",
+            "name": "3",
+            "rtsp_url": "rtsp://192.168.0.103:554/0/av0",
+            "audio_url": "rtsp://192.168.0.103:8001/0/audio",
+            "white_light_status": false,
+            "ir_light_status": false,
+            "day_night_status": true,
+            "last_connection_attempt": 0,
+            "connection_attempts": 0,
+            "initial_connection_done": false,
+            "tracking_enabled": false,
+            "recording_config": {
+                "enable_recording": false,
+                "enable_images": true,
+                "record_mode": "continuous",
+                "start_time": "00:00",
+                "end_time": "24:00",
+                "days": {
+                    "mon": true,
+                    "tue": true,
+                    "wed": true,
+                    "thu": true,
+                    "fri": true,
+                    "sat": true,
+                    "sun": true
+                },
+                "pre_record_delay": 60,
+                "stop_delay": 20,
+                "min_photo_time": 60,
+                "photo_count": 1,
+                "photo_interval": 10,
+                "video_retention": "1h",
+                "image_retention": "1h",
+                "max_space_gb": 1
+            },
+            "audio_volume": 8,
+            "image_capture_settings": {
+                "min_confidence": 0.88,
+                "wait_time": 10,
+                "last_capture_time": 1768936012.540092,
+                "person_detected": true,
+                "detection_start_time": 1768936557.4588537
+            }
+        },
+        {
+            "ip": "192.168.0.104",
+            "name": "4",
+            "rtsp_url": "rtsp://192.168.0.104:554/0/av0",
+            "audio_url": "rtsp://192.168.0.104:8001/0/audio",
+            "white_light_status": false,
+            "ir_light_status": false,
+            "day_night_status": true,
+            "last_connection_attempt": 0,
+            "connection_attempts": 0,
+            "initial_connection_done": false,
+            "tracking_enabled": false,
+            "recording_config": {
+                "enable_recording": false,
+                "enable_images": true,
+                "record_mode": "continuous",
+                "start_time": "00:00",
+                "end_time": "23:59",
+                "days": {
+                    "mon": true,
+                    "tue": true,
+                    "wed": true,
+                    "thu": true,
+                    "fri": true,
+                    "sat": true,
+                    "sun": true
+                },
+                "pre_record_delay": 60,
+                "stop_delay": 20,
+                "min_photo_time": 60,
+                "photo_count": 2,
+                "photo_interval": 2,
+                "video_retention": "1h",
+                "image_retention": "1h",
+                "max_space_gb": 1
+            },
+            "audio_volume": 8,
+            "image_capture_settings": {
+                "min_confidence": 0.8,
+                "wait_time": 10,
+                "last_capture_time": 0,
+                "person_detected": true,
+                "detection_start_time": 0.5
+            }
+        }
+    ],
+    "current_camera_index": 1
+}

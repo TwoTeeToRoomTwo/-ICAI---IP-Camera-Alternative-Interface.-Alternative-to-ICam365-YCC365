@@ -1,0 +1,1 @@
+sudo pacman -S opencv gst-plugins-base gst-plugins-good gst-plugins-bad gst-libav pygame requests numpy threading requests tkinter python-sounddevice

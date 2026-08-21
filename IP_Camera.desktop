@@ -1,0 +1,13 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=IP_Camera
+Comment=Start IP_CAMERA
+Exec=/bin/bash -c 'cd "$(dirname "%k")" && python WORKABLE.py'
+Icon=/Please_Provide_The_Full_Path/ICAI/icon/cctv.png
+MimeType=
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
