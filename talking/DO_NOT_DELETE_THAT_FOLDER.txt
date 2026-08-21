@@ -1,1 +1,1 @@
-The folder is important for the app to work properly, it serves for: When we press and hold the "Intercom" button, an audio file is created in the "talking" folder, then the file is sent to the camera's memory, and then the audio file is played through the built-in speaker of your camera. After the playback of the audio file is finished, it is deleted automatically, both from the "talking" folder and from the device's memory.
+
