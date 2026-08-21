@@ -5,3 +5,7 @@ NB!!! 1. Before using that app "ICAI, let's thank to Jalecom for providing the t
 3. IM TOO LAZY, TO TRANSLATE, ALL OF THE TEXT, OF THE EXPLANATIONS. SO GOOD LUCK WITH THAT TASK 
 
 4. The app is far from complete! You are welcome to use your brain and help with it!
+
+5. "recording_module.py" and "tracking_module.py" are not usable for now!
+
+I hope the application is useful for someone. I'm not a programmer, I relied on the help of the AI ​​model, and therefore gross errors are possible.
