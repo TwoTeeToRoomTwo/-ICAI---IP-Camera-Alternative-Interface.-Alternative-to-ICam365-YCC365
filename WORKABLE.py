@@ -37,7 +37,7 @@ except ImportError as e:
 
 class CameraController:
     def __init__(self):
-        # === Основни променливи за Уоки-Токи ===
+        # === Основни променливи за Intercom ===
         self.walkie_talkie_recording = False
         self.walkie_talkie_audio_data = []
         self.walkie_talkie_start_time = None
@@ -339,7 +339,7 @@ class CameraController:
 
                                         else:
                                             self.storage_cache[cam_ip] = (
-                                                "невалиден формат на df"
+                                                "невалиDay формат на df"
                                             )
                                             self.storage_cache_timestamp[cam_ip] = (
                                                 current_time
@@ -400,7 +400,7 @@ class CameraController:
 
     def walkie_talkie_start_recording(self):
         if not WALKIE_TALKIE_AVAILABLE:
-            self.set_status("Уоки-Токи: липсват зависимости")
+            self.set_status("Intercom: липсват зависимости")
             return
         if self.walkie_talkie_recording or self.walkie_talkie_button_locked:
             return
@@ -523,7 +523,7 @@ class CameraController:
         pygame.draw.rect(surface, color, rect, border_radius=8)
         pygame.draw.rect(surface, self.colors["border"], rect, 2, border_radius=8)
 
-        text = "ГОВОРИ СЕГА" if self.walkie_talkie_active else "Уоки-Токи"
+        text = "ГОВОРИ СЕГА" if self.walkie_talkie_active else "Intercom"
         text_surf = self.font_medium.render(text, True, self.colors["text"])
         surface.blit(text_surf, text_surf.get_rect(center=rect.center))
 
@@ -616,7 +616,7 @@ class CameraController:
                     config.get("current_camera_index", 0), max(0, len(self.cameras) - 1)
                 )
 
-                print("Конфигурация заредена успешно")
+                print("Конфигурация зареDayа успешно")
             else:
                 print("Конфигурационен файл не съществува")
                 self.cameras = []
@@ -953,7 +953,7 @@ class CameraController:
                 and self.current_camera_index >= 0
                 and self.current_camera_index < len(self.cameras)
             ):
-                coords_text = f"Зуум: {self.current_zoom:.1f}x"
+                coords_text = f"Zoom: {self.current_zoom:.1f}x"
                 coords_surface = self.font_small.render(
                     coords_text, True, self.colors["text_secondary"]
                 )
@@ -1122,7 +1122,7 @@ class CameraController:
                 surface, x + control_width // 2, y + control_height // 2 - 20, 50
             )
 
-            # Добавяме бутон за изход от цял екран
+            # Добавяме бутон за изход от Full Screen
             exit_rect = pygame.Rect(x + 10, y + control_height - 40, 30, 30)
             pygame.draw.rect(surface, self.colors["danger"], exit_rect, border_radius=5)
             exit_text = self.font_medium.render("⌫", True, self.colors["text"])
@@ -1223,7 +1223,7 @@ class CameraController:
     def add_camera(self, ip, name):
         """Добавя нова камера към списъка с валидация на IP"""
         if not self.validate_ipv4(ip):
-            self.set_status("Невалиден IP адрес")
+            self.set_status("НевалиDay IP адрес")
             return -1
         camera = {
             "ip": ip,
@@ -1274,7 +1274,7 @@ class CameraController:
             self.set_status(f"Премахната камера: {removed_camera.get('name', '?')}")
 
     def switch_camera(self, index):
-        """Превключва към друга камера и подновява мини видеопотоци"""
+        """ПреONючва към друга камера и подновява мини видеопотоци"""
         if 0 <= index < len(self.cameras):
             cur = self.get_current_camera()
             if cur and (cur.get("cap") or cur.get("mini_cap")):
@@ -1291,7 +1291,7 @@ class CameraController:
             self.stop_audio_stream()
 
             self.current_camera_index = index
-            self.set_status(f"Превключено към: {self.cameras[index]['name']}")
+            self.set_status(f"ПреONючено към: {self.cameras[index]['name']}")
             self.start_video_stream_async()
             self.start_audio_stream()
 
@@ -1404,7 +1404,7 @@ class CameraController:
             video_height = self.screen_height - 50
 
             left_panel = self.draw_control_panel(
-                self.screen, 10, 50, panel_width, video_height, "Контрол"
+                self.screen, 10, 50, panel_width, video_height, "Control"
             )
             right_panel = self.draw_control_panel(
                 self.screen,
@@ -1421,7 +1421,7 @@ class CameraController:
             pygame.draw.rect(self.screen, (0, 0, 0), self.video_rect)
             pygame.draw.rect(self.screen, self.colors["border"], self.video_rect, 2)
             title_surface = self.font_medium.render(
-                "Видео Стрийм", True, self.colors["text"]
+                "Video Stream", True, self.colors["text"]
             )
             self.screen.blit(
                 title_surface, (self.video_rect.x + 10, self.video_rect.y - 25)
@@ -1559,19 +1559,19 @@ class CameraController:
             button_spacing = 8
             start_y = 80
 
-            # Уоки-Токи бутон (най-горе)
+            # Intercom бутон (най-горе)
             self.draw_walkie_talkie_button(
                 self.screen, 20, start_y, panel_width - 20, button_height
             )
 
-            # Разпознаване
+            # Detection
             self.draw_button(
                 self.screen,
                 20,
                 start_y + button_height + button_spacing,
                 panel_width - 20,
                 button_height,
-                f"Разпознаване: {'ВКЛ' if self.get_current_camera() and self.get_current_camera().get('tracking_enabled', False) else 'ИЗКЛ'}",
+                f"Detection: {'ON' if self.get_current_camera() and self.get_current_camera().get('tracking_enabled', False) else 'OFF'}",
                 self.colors["success"]
                 if self.get_current_camera()
                 and self.get_current_camera().get("tracking_enabled", False)
@@ -1583,14 +1583,14 @@ class CameraController:
                 is_toggle=True,
             )
 
-            # Бяло осветление
+            # White Light
             self.draw_button(
                 self.screen,
                 20,
                 start_y + 2 * (button_height + button_spacing),
                 panel_width - 20,
                 button_height,
-                f"Бяло осветление: {'ON' if self.get_current_camera() and self.get_current_camera().get('white_light_status', False) else 'OFF'}",
+                f"White Light: {'ON' if self.get_current_camera() and self.get_current_camera().get('white_light_status', False) else 'OFF'}",
                 self.colors["success"]
                 if self.get_current_camera()
                 and self.get_current_camera().get("white_light_status", False)
@@ -1602,14 +1602,14 @@ class CameraController:
                 is_toggle=True,
             )
 
-            # IR осветление
+            # IR Light
             self.draw_button(
                 self.screen,
                 20,
                 start_y + 3 * (button_height + button_spacing),
                 panel_width - 20,
                 button_height,
-                f"IR осветление: {'ON' if self.get_current_camera() and self.get_current_camera().get('ir_light_status', False) else 'OFF'}",
+                f"IR Light: {'ON' if self.get_current_camera() and self.get_current_camera().get('ir_light_status', False) else 'OFF'}",
                 self.colors["success"]
                 if self.get_current_camera()
                 and self.get_current_camera().get("ir_light_status", False)
@@ -1621,14 +1621,14 @@ class CameraController:
                 is_toggle=True,
             )
 
-            # Ден/Нощ
+            # Day/Night
             self.draw_button(
                 self.screen,
                 20,
                 start_y + 4 * (button_height + button_spacing),
                 panel_width - 20,
                 button_height,
-                f"Режим: {'Ден' if self.get_current_camera() and self.get_current_camera().get('day_night_status', True) else 'Нощ'}",
+                f"MODE: {'Day' if self.get_current_camera() and self.get_current_camera().get('day_night_status', True) else 'Night'}",
                 self.colors["success"]
                 if self.get_current_camera()
                 and self.get_current_camera().get("day_night_status", True)
@@ -1763,7 +1763,7 @@ class CameraController:
                 "8",
             )
 
-            # Блокиране на движенията
+            # Motion Tracking на движенията
             block_y = ptz_y + 3 * (button_size + spacing) + 10
             self.draw_button(
                 self.screen,
@@ -1771,7 +1771,7 @@ class CameraController:
                 block_y,
                 panel_width - 20,
                 button_height,
-                f"Блокиране: {'ВКЛ' if self.movement_blocking_enabled else 'ИЗКЛ'}",
+                f"Motion Tracking: {'ON' if self.movement_blocking_enabled else 'OFF'}",
                 self.colors["success"]
                 if self.movement_blocking_enabled
                 else self.colors["danger"],
@@ -1793,7 +1793,7 @@ class CameraController:
                 self.mic_gain,
                 0,
                 100,
-                "Микрофон (%)",
+                "Mic. (%)",
                 is_zoom_slider=False,
                 callback=lambda v: setattr(self, "mic_gain", int(v)),
             )
@@ -1806,12 +1806,12 @@ class CameraController:
                 self.playback_gain,
                 0,
                 100,
-                "Възпроизвеждане (%)",
+                "Sound (%)",
                 is_zoom_slider=False,
                 callback=lambda v: setattr(self, "playback_gain", int(v)),
             )
 
-            # === Десен панел: добавяне на камера, списък, зуум, IR команди ===
+            # === Десен панел: добавяне на камера, списък, Zoom, IR команди ===
             right_start_y = 80
             title_surface = self.font_large.render(".", True, self.colors["text"])
             self.screen.blit(
@@ -1839,7 +1839,7 @@ class CameraController:
                 35,
                 self.name_input,
                 self.input_active == "name",
-                "Име:",
+                "Name:",
             )
 
             btn_y = name_field_y + 50
@@ -1849,7 +1849,7 @@ class CameraController:
                 btn_y,
                 (panel_width - 40) // 2,
                 35,
-                "Добави",
+                "Add",
                 self.colors["success"],
                 self.colors["accent_hover"],
                 self.font_medium,
@@ -1862,7 +1862,7 @@ class CameraController:
                 btn_y,
                 (panel_width - 40) // 2,
                 35,
-                "Запази",
+                "SAVE",
                 self.colors["accent"],
                 self.colors["accent_hover"],
                 self.font_medium,
@@ -1870,10 +1870,10 @@ class CameraController:
                 "save",
             )
 
-            # Списък с камери
+            # Camera List
             cam_list_y = btn_y + 50
             cam_list_title = self.font_large.render(
-                "Списък с камери", True, self.colors["text"]
+                "Camera List", True, self.colors["text"]
             )
             self.screen.blit(
                 cam_list_title, (self.screen_width - panel_width + 10, cam_list_y)
@@ -1919,7 +1919,7 @@ class CameraController:
                         f"remove_camera_{id}",
                     )
 
-            # Зуум
+            # Zoom
             zoom_y = cam_list_y + 60 + len(self.cameras) * (button_height + 5)
             current_cam = self.get_current_camera()
             if current_cam:
@@ -1933,7 +1933,7 @@ class CameraController:
                     cam_zoom,
                     1.0,
                     self.max_zoom,
-                    "Зуум",
+                    "Zoom",
                     is_zoom_slider=True,
                 )
 
@@ -1943,7 +1943,7 @@ class CameraController:
                     zoom_y + 30,
                     (panel_width - 35) // 2,
                     button_height,
-                    "Зуум +",
+                    "Zoom +",
                     self.colors["accent"],
                     self.colors["accent_hover"],
                     self.font_medium,
@@ -1956,7 +1956,7 @@ class CameraController:
                     zoom_y + 30,
                     (panel_width - 35) // 2,
                     button_height,
-                    "Зуум -",
+                    "Zoom -",
                     self.colors["accent"],
                     self.colors["accent_hover"],
                     self.font_medium,
@@ -1970,7 +1970,7 @@ class CameraController:
                     zoom_y + 70,
                     panel_width - 30,
                     button_height,
-                    "Нулирай зуум",
+                    "Reset Zoom",
                     self.colors["accent"],
                     self.colors["accent_hover"],
                     self.font_medium,
@@ -1981,12 +1981,12 @@ class CameraController:
             # IR команди
             ir_y = zoom_y + 140 if current_cam else zoom_y
             ir_buttons = [
-                ("IR Филтър Ден", lambda: self.cgi_cmd("ircut_only?mode=day")),
-                ("IR Филтър Нощ", lambda: self.cgi_cmd("ircut_only?mode=night")),
-                ("IRCUT Ден (Цветно)", lambda: self.cgi_cmd("ircut?mode=day")),
-                ("IRCUT Нощ (Ч/Б)", lambda: self.cgi_cmd("ircut?mode=night")),
-                ("IR Ден режим", lambda: self.cgi_cmd("irctrl?mode=day")),
-                ("IR Нощ режим", lambda: self.cgi_cmd("irctrl?mode=night")),
+                ("IR Filter Day", lambda: self.cgi_cmd("ircut_only?mode=day")),
+                ("IR Filter Night", lambda: self.cgi_cmd("ircut_only?mode=night")),
+                ("IRCUT Day (color)", lambda: self.cgi_cmd("ircut?mode=day")),
+                ("IRCUT Night (Ч/Б)", lambda: self.cgi_cmd("ircut?mode=night")),
+                ("IR Day mode", lambda: self.cgi_cmd("irctrl?mode=day")),
+                ("IR Night mode", lambda: self.cgi_cmd("irctrl?mode=night")),
             ]
             for i, (text, cmd_func) in enumerate(ir_buttons):
                 self.draw_button(
@@ -2046,7 +2046,7 @@ class CameraController:
                 "alarm",
             )
 
-            # Горен десен ъгъл: запазване и цял екран
+            # Горен десен ъгъл: запазване и Full Screen
             settings_y = 10
             self.draw_button(
                 self.screen,
@@ -2054,7 +2054,7 @@ class CameraController:
                 settings_y,
                 90,
                 30,
-                "Запази",
+                "SAVE",
                 self.colors["success"],
                 self.colors["accent_hover"],
                 self.font_medium,
@@ -2067,7 +2067,7 @@ class CameraController:
                 settings_y,
                 90,
                 30,
-                "Цял екран",
+                "Full Screen",
                 self.colors["warning"],
                 self.colors["accent_hover"],
                 self.font_medium,
@@ -2370,11 +2370,11 @@ class CameraController:
             return pygame.Rect(0, 0, 0, 0)
 
     def add_new_camera_from_input(self):
-        """Добавя нова камера от въведените данни"""
+        """Добавя нова камера от въвеDayите данни"""
         if self.ip_input.strip():
             ip = self.ip_input.strip()
             if not self.validate_ipv4(ip):
-                self.set_status("Невалиден IP адрес")
+                self.set_status("НевалиDay IP адрес")
                 return
             name = (
                 self.name_input.strip()
@@ -2481,14 +2481,14 @@ class CameraController:
                 self.fullscreen_surface.get_height(),
             )
 
-            # Рисуваме контролите за цял екран
+            # Рисуваме контролите за Full Screen
             self.draw_fullscreen_controls(self.fullscreen_surface)
 
             # Копираме съдържанието на fullscreen_surface в основния екран
             self.screen.blit(self.fullscreen_surface, (0, 0))
             pygame.display.flip()
         except Exception as e:
-            print("Грешка при рендиране на цял екран:", e)
+            print("Грешка при рендиране на Full Screen:", e)
             traceback.print_exc()
 
     def toggle_fullscreen(self):
@@ -2500,14 +2500,14 @@ class CameraController:
                 self.windowed_width = self.screen_width
                 self.windowed_height = self.screen_height
 
-                # Превключваме към цял екран
+                # ПреONючваме към Full Screen
                 info = pygame.display.Info()
                 self.screen = pygame.display.set_mode(
                     (info.current_w, info.current_h),
                     pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.HWSURFACE,
                 )
                 self.screen_width, self.screen_height = info.current_w, info.current_h
-                self.set_status("Режим на цял екран: ВКЛ")
+                self.set_status("mode на Full Screen: ON")
 
                 # Създаваме fullscreen surface ако не съществува
                 if self.fullscreen_surface is None:
@@ -2515,17 +2515,17 @@ class CameraController:
                         (info.current_w, info.current_h)
                     )
             else:
-                # Връщаме към нормален режим
+                # Връщаме към нормален mode
                 self.screen = pygame.display.set_mode(
                     (self.windowed_width, self.windowed_height),
                     pygame.RESIZABLE | pygame.DOUBLEBUF | pygame.HWSURFACE,
                 )
                 self.screen_width = self.windowed_width
                 self.screen_height = self.windowed_height
-                self.set_status("Режим на цял екран: ИЗКЛ")
+                self.set_status("mode на Full Screen: OFF")
 
         except Exception as e:
-            print("Грешка при превключване на цял екран:", e)
+            print("Грешка при преONючване на Full Screen:", e)
             traceback.print_exc()
             self.fullscreen_mode = False
             try:
@@ -2536,7 +2536,7 @@ class CameraController:
                 )
             except:
                 pass
-            self.set_status("Грешка при превключване на цял екран")
+            self.set_status("Грешка при преONючване на Full Screen")
 
     def apply_zoom(
         self,
@@ -2604,7 +2604,7 @@ class CameraController:
                 new_zoom = min(self.max_zoom, current_zoom + self.zoom_step)
                 cam["current_zoom"] = new_zoom
             self.send_ptz_command("9")  # zoom-in
-            self.set_status(f"Зуум: {new_zoom:.1f}x")
+            self.set_status(f"Zoom: {new_zoom:.1f}x")
             self.button_cooldowns["zoom_in"] = time.time()
 
     def zoom_out(self):
@@ -2619,7 +2619,7 @@ class CameraController:
                 new_zoom = max(1.0, current_zoom - self.zoom_step)
                 cam["current_zoom"] = new_zoom
             self.send_ptz_command("a")  # zoom-out
-            self.set_status(f"Зуум: {new_zoom:.1f}x")
+            self.set_status(f"Zoom: {new_zoom:.1f}x")
             self.button_cooldowns["zoom_out"] = time.time()
 
     def reset_zoom(self):
@@ -2631,7 +2631,7 @@ class CameraController:
         if cam:
             with self.position_lock:
                 cam["current_zoom"] = 1.0
-            self.set_status("Зуумът е нулиран")
+            self.set_status("Zoomът е нулиран")
             self.button_cooldowns["reset_zoom"] = time.time()
 
     def start_video_stream_async(self):
@@ -2704,7 +2704,7 @@ class CameraController:
             print(f"Грешка при свързване към камера: {e}")
             cam["connected"] = False
             self.set_status(f"Грешка при свързване към: {cam['name']}")
-            # Осигуряване че ресурсите са освободени
+            # Осигуряване че ресурсите са освобоDayи
             if "cap" in locals() and cap:
                 try:
                     cap.release()
@@ -2926,20 +2926,20 @@ class CameraController:
         t.start()
 
     def toggle_object_detection(self):
-        """Превключва разпознаването на обекти"""
+        """ПреONючва Detection на обекти"""
         current_cam = self.get_current_camera()
         if current_cam:
             current_cam["tracking_enabled"] = not current_cam.get(
                 "tracking_enabled", False
             )
             if current_cam["tracking_enabled"]:
-                self.set_status("Разпознаването на обекти е СТАРТИРАНО")
+                self.set_status("Detection на обекти е СТАРТИРАНО")
             else:
-                self.set_status("Разпознаването на обекти е СПРЯНО")
+                self.set_status("Detection на обекти е СПРЯНО")
             self.save_config()
 
     def toggle_white_light(self):
-        """Превключва бялата светлина ЧРЕЗ CGI КОМАНДИ"""
+        """ПреONючва бялата светлина ЧРЕЗ CGI КОМАНДИ"""
         # Проверка за cooldown (1 секунда)
         if "white_light" in self.button_cooldowns:
             if time.time() - self.button_cooldowns["white_light"] < 1.0:
@@ -2955,16 +2955,16 @@ class CameraController:
             cmd = "Won" if cam["white_light_status"] else "Woff"
             self.cgi_cmd(cmd)  # Използваме CGI вместо PTZ
             self.set_status(
-                f"Бяло осветление: {'ВКЛ' if cam['white_light_status'] else 'ИЗКЛ'}"
+                f"White Light: {'ON' if cam['white_light_status'] else 'OFF'}"
             )
             # Задаване на cooldown (1 секунда)
             self.button_cooldowns["white_light"] = time.time()
         except Exception as e:
-            print(f"Грешка при превключване на бялата светлина: {e}")
+            print(f"Грешка при преONючване на бялата светлина: {e}")
             traceback.print_exc()
 
     def toggle_ir_light(self):
-        """Превключва IR светлината ЧРЕЗ CGI КОМАНДИ"""
+        """ПреONючва IR светлината ЧРЕЗ CGI КОМАНДИ"""
         # Проверка за cooldown (1 секунда)
         if "ir_light" in self.button_cooldowns:
             if time.time() - self.button_cooldowns["ir_light"] < 1.0:
@@ -2979,13 +2979,11 @@ class CameraController:
             # Използване на CGI команди вместо PTZ
             cmd = "iron" if cam["ir_light_status"] else "iroff"
             self.cgi_cmd(cmd)  # Използваме CGI вместо PTZ
-            self.set_status(
-                f"IR осветление: {'ВКЛ' if cam['ir_light_status'] else 'ИЗКЛ'}"
-            )
+            self.set_status(f"IR Light: {'ON' if cam['ir_light_status'] else 'OFF'}")
             # Задаване на cooldown (1 секунда)
             self.button_cooldowns["ir_light"] = time.time()
         except Exception as e:
-            print(f"Грешка при превключване на IR светлината: {e}")
+            print(f"Грешка при преONючване на IR светлината: {e}")
             traceback.print_exc()
 
     def toggle_day_night(self):
@@ -3001,10 +2999,10 @@ class CameraController:
             cam["day_night_status"] = not cam.get("day_night_status", True)
             cmd = "ircut?mode=day" if cam["day_night_status"] else "ircut?mode=night"
             self.cgi_cmd(cmd)
-            self.set_status(f"Режим: {'Ден' if cam['day_night_status'] else 'Нощ'}")
+            self.set_status(f"MODE: {'Day' if cam['day_night_status'] else 'Night'}")
             self.button_cooldowns["day_night"] = time.time()
         except Exception as e:
-            print(f"Грешка при превключване на ден/нощ режим: {e}")
+            print(f"Грешка при преONючване на Day/Night MODE: {e}")
             traceback.print_exc()
 
     def update_ptz_position(self, cam_ip):
@@ -3056,7 +3054,7 @@ class CameraController:
     def toggle_movement_blocking(self):
         self.movement_blocking_enabled = not self.movement_blocking_enabled
         self.set_status(
-            f"Блокиране на движенията: {'ВКЛ' if self.movement_blocking_enabled else 'ИЗКЛ'}"
+            f"Motion Tracking на движенията: {'ON' if self.movement_blocking_enabled else 'OFF'}"
         )
         self.save_config()
         self.button_cooldowns["movement_blocking"] = time.time()
@@ -3068,13 +3066,13 @@ class CameraController:
     def main_loop(self):
         clock = pygame.time.Clock()
 
-        # Стартираме всички видео стриймове за камерите
+        # Стартираме всички Video Streamове за камерите
         for i in range(len(self.cameras)):
             # Стартираме мини видео потоци за всички камери
             self.start_mini_video_stream_async(i)
             time.sleep(0.5)  # Увеличено изчакване между стартиранията
 
-        # Превключваме към първата камера
+        # ПреONючваме към първата камера
         if len(self.cameras) > 0:
             self.switch_camera(0)
 
@@ -3107,9 +3105,9 @@ class CameraController:
                         if event.button == 1:
                             mouse_pos = pygame.mouse.get_pos()
 
-                            # Обработка на кликване в цял екран режим
+                            # Обработка на кликване в Full Screen mode
                             if self.fullscreen_mode:
-                                # Проверяваме дали е кликнато в контролите за цял екран
+                                # Проверяваме дали е кликнато в контролите за Full Screen
                                 controls = self.draw_fullscreen_controls(
                                     None
                                 )  # Получаваме само правоъгълниците
@@ -3306,7 +3304,7 @@ class CameraController:
                         elif event.y < 0:
                             self.zoom_out()
 
-                # Актуализираме всички мини видео стриймове
+                # Актуализираме всички мини Video Streamове
                 for i, camera in enumerate(self.cameras):
                     # Проверяваме дали камерата е свързана
                     is_connected = (
@@ -3349,7 +3347,7 @@ class CameraController:
                         except Exception as e:
                             time.sleep(0.1)  # По-дълго изчакване при грешка
 
-                # Актуализираме основния видео стрийм
+                # Актуализираме основния Video Stream
                 cam = self.get_current_camera()
                 if cam and (cam.get("cap") and cam["cap"].isOpened()):
                     try:
