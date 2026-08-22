@@ -51,6 +51,11 @@ class CameraController:
 
         self.ptz_cache = {}
         self.storage_cache = {}
+        self.show_recordings_window
+        self.recordings_window_open = False
+        self.recordings_process = None
+
+        self.alarm_triggered = False
 
         # Инициализация на Pygame
         pygame.init()
@@ -269,6 +274,63 @@ class CameraController:
         thread = threading.Thread(target=connectivity_worker, daemon=True)
         thread.start()
 
+    def play_alarm(self):
+        """Изпраща само една команда за аларма при едно натискане."""
+
+        # Не изпращаме нова команда, ако вече е задействана
+        if self.alarm_triggered:
+            return
+
+        self.alarm_triggered = True
+
+        def worker():
+            try:
+                cam = self.get_current_camera()
+                if cam is None:
+                    self.alarm_triggered = False
+                    return
+
+                ports = [8001]
+                success = False
+
+                for port in ports:
+                    try:
+                        url = f"http://{cam['ip']}:{port}/playaudio"
+
+                        response = self.http_session.get(
+                            url,
+                            params={"file": "/home/alarm.wav"},
+                            timeout=1,
+                        )
+
+                        if response.status_code == 200:
+                            success = True
+                            self.set_status(f"Алармата е задействана на порт {port}")
+                            break
+
+                        print(
+                            f"Грешка при playaudio на порт {port}: "
+                            f"{response.status_code}"
+                        )
+
+                    except requests.exceptions.ConnectionError:
+                        print(f"Няма връзка към порт {port}")
+
+                    except Exception as e:
+                        print(f"Грешка при playaudio на порт {port}: {e}")
+
+                if not success:
+                    self.alarm_triggered = False
+                    self.connection_lost = True
+                    self.set_status("Грешка: алармата не може да бъде задействана")
+
+            except Exception as e:
+                self.alarm_triggered = False
+                print(f"Обща грешка при play_alarm: {e}")
+                self.set_status("Грешка при активиране на алармата")
+
+        threading.Thread(target=worker, daemon=True).start()
+
     def start_storage_cache_updater(self):
         """Starts a background thread to update storage cache periodically"""
 
@@ -392,6 +454,64 @@ class CameraController:
             return self.ptz_cache.get(cam_ip, "X=? Y=?")
 
         return "X=? Y=?"
+
+    def open_recordings_browser(self):
+        """Отваря FTP файловия мениджър."""
+
+        current_cam = self.get_current_camera()
+
+        if not current_cam:
+            messagebox.showerror("Грешка", "Първо изберете камера.")
+            return
+
+        RecordingsBrowser(parent=self.root, camera=current_cam)
+
+    def show_recordings_window(self):
+        """
+        Стартира отделния файлов мениджър за записите.
+        Не позволява стартирането на повече от един процес.
+        """
+
+        # Ако процесът съществува и все още работи,
+        # не стартираме втори прозорец
+        if (
+            self.recordings_process is not None
+            and self.recordings_process.poll() is None
+        ):
+            print("Прозорецът със записите вече е отворен.")
+            return
+
+        current_cam = self.get_current_camera()
+
+        if not current_cam:
+            print("Няма избрана камера.")
+            return
+
+        cam_ip = current_cam.get("ip")
+
+        if not cam_ip:
+            print("Избраната камера няма IP адрес.")
+            return
+
+        try:
+            script_directory = os.path.dirname(os.path.abspath(__file__))
+
+            browser_script = os.path.join(script_directory, "recordings_browser.py")
+
+            self.recordings_process = subprocess.Popen(
+                [
+                    sys.executable,
+                    browser_script,
+                    cam_ip,
+                ],
+                cwd=script_directory,
+            )
+
+            print("Файловият мениджър за записите е стартиран.")
+
+        except Exception as e:
+            self.recordings_process = None
+            print(f"Грешка при стартиране на файловия мениджър: {e}")
 
     def walkie_talkie_record_callback(self, indata, frames, time_info, status):
         if self.walkie_talkie_recording:
@@ -1764,51 +1884,85 @@ class CameraController:
             )
 
             # Motion Tracking на движенията
-            block_y = ptz_y + 3 * (button_size + spacing) + 10
-            self.draw_button(
-                self.screen,
-                20,
-                block_y,
-                panel_width - 20,
-                button_height,
-                f"Motion Tracking: {'ON' if self.movement_blocking_enabled else 'OFF'}",
-                self.colors["success"]
-                if self.movement_blocking_enabled
-                else self.colors["danger"],
-                self.colors["accent_hover"],
-                self.font_medium,
-                self.toggle_movement_blocking,
-                "movement_blocking",
-                is_toggle=True,
-            )
+            # block_y = ptz_y + 3 * (button_size + spacing) + 10
+            # self.draw_button(
+            #    self.screen,
+            #    20,
+            #    block_y,
+            #    panel_width - 20,
+            #    button_height,
+            #    f"Motion Tracking: {'ON' if self.movement_blocking_enabled else 'OFF'}",
+            #    self.colors["success"]
+            #    if self.movement_blocking_enabled
+            #    else self.colors["danger"],
+            #    self.colors["accent_hover"],
+            #    self.font_medium,
+            #    self.toggle_movement_blocking,
+            #    "movement_blocking",
+            #    is_toggle=True,
+            # )
 
             # Слайдери за gain
-            gain_y = block_y + button_height + 20
+            gain_y = ptz_y + 3 * (button_size + spacing) + 40
             self.draw_slider(
                 self.screen,
                 20,
                 gain_y,
                 panel_width - 20,
-                20,
+                max(15, button_height // 2),
                 self.mic_gain,
                 0,
                 100,
-                "Mic. (%)",
+                "MIC GAIN (%)",
                 is_zoom_slider=False,
                 callback=lambda v: setattr(self, "mic_gain", int(v)),
             )
             self.draw_slider(
                 self.screen,
                 20,
-                gain_y + 30,
+                gain_y + max(20, button_height // 2) + 5,
                 panel_width - 20,
-                20,
+                max(15, button_height // 2),
                 self.playback_gain,
                 0,
                 100,
-                "Sound (%)",
+                "SOUND GAIN (%)",
                 is_zoom_slider=False,
                 callback=lambda v: setattr(self, "playback_gain", int(v)),
+            )
+
+            # Дефинираме recordings_y — 50 пиксела под gain слайдерите
+            recordings_y = gain_y + button_height + 50
+
+            # В render_ui, след дефинирането на recordings_y:
+            self.draw_button(
+                self.screen,
+                20,
+                recordings_y,
+                panel_width - 20,
+                button_height,
+                "VIEW RECORDS",
+                (139, 69, 19),  # Светло кафяв
+                self.colors["accent_hover"],
+                self.font_medium,
+                self.show_recordings_window,  # Сега стартира нов прозорец
+                "show_recordings",
+            )
+
+            audio_y = recordings_y + button_height + 40
+
+            self.draw_button(
+                self.screen,
+                20,
+                audio_y,
+                panel_width - 20,
+                button_height,
+                "ALARM",
+                self.colors["danger"],
+                self.colors["accent_hover"],
+                self.font_medium,
+                lambda: self.play_alarm(),
+                "alarm",
             )
 
             # === Десен панел: добавяне на камера, списък, Zoom, IR команди ===
@@ -2029,21 +2183,6 @@ class CameraController:
                 self.font_medium,
                 lambda: self.cgi_cmd("testdualsensor?mode=out"),
                 "sensor_out",
-            )
-
-            audio_y = sensor_y + 2 * (button_height + 5) + 30
-            self.draw_button(
-                self.screen,
-                self.screen_width - panel_width + 10,
-                audio_y,
-                panel_width - 30,
-                button_height,
-                "Аларма",
-                self.colors["danger"],
-                self.colors["accent_hover"],
-                self.font_medium,
-                lambda: self.cgi_cmd("playaudio?file=/tmp/VOICE/alarm.wav"),
-                "alarm",
             )
 
             # Горен десен ъгъл: запазване и Full Screen
@@ -3295,6 +3434,11 @@ class CameraController:
                     if event.type == pygame.MOUSEBUTTONUP:
                         if event.button == 1:
                             self.release_all_buttons()
+
+                            # Позволява алармата да бъде задействана отново
+                            # при следващо натискане
+                            self.alarm_triggered = False
+
                         if "slider_zoom" in self.button_cooldowns:
                             del self.button_cooldowns["slider_zoom"]
 
@@ -3479,3 +3623,4 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Фатална грешка: {e}")
         traceback.print_exc()
+
